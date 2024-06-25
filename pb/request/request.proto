@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package mbox.request;
+option go_package = "github.com/twgcode/mbox/pb/request";
+
+import "google/protobuf/timestamp.proto";
+
+message PageRequest {
+  // 页码
+  // @gotags: json:"page_num" validate:"required,min=1"
+  uint64 page_num = 1;
+  // 每页数据量
+  // @gotags: json:"page_size" validate:"required,min=1"
+  uint64 page_size = 2;
+}
+
+message TimeRangeRequest {
+  google.protobuf.Timestamp start_time = 1;
+  google.protobuf.Timestamp end_time = 2;
+}
+
+message KeywordRequest {
+  // 模糊搜索关键词
+  // @gotags: json:"keyword"
+  string keyword = 1;
+}
+
+
+
+

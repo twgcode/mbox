@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package mbox.deleted;
+option go_package = "github.com/twgcode/mbox/pb/deleted";
+
+enum Deleted {
+    //   未删除
+     Not= 0;
+    //  已经删除
+    Is = 1;
+}
