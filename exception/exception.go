@@ -80,6 +80,19 @@ func NewIllegalOperation(format string, a ...interface{}) APIException {
 	return newException(IllegalOperation, format, a...)
 }
 
+// IsErrorWithCode 判断是否是指定的错误代码
+func IsErrorWithCode(err error, errCode Code) bool {
+	if err == nil {
+		return false
+	}
+
+	e, ok := err.(APIException)
+	if !ok {
+		return false
+	}
+	return e.ErrorCode() == errCode
+}
+
 func FromError(err error) (a APIException, ok bool) {
 	if err == nil {
 		return nil, false

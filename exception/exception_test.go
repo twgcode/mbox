@@ -35,3 +35,63 @@ func TestNewAPIException(t *testing.T) {
 		})
 	}
 }
+
+func TestIsErrorWithCode(t *testing.T) {
+	tests := []struct {
+		name    string
+		err     error
+		errCode Code
+		want    bool
+	}{
+		{
+			name:    "nil error",
+			err:     nil,
+			errCode: BadRequest,
+			want:    false,
+		},
+		{
+			name:    "not APIException",
+			err:     NewNotFound("not found error"),
+			errCode: BadRequest,
+			want:    false,
+		},
+		{
+			name:    "BadRequest error",
+			err:     NewBadRequest("bad request error"),
+			errCode: BadRequest,
+			want:    true,
+		},
+		{
+			name:    "NotFound error",
+			err:     NewNotFound("not found error"),
+			errCode: NotFound,
+			want:    true,
+		},
+		{
+			name:    "Conflict error",
+			err:     NewConflict("conflict error"),
+			errCode: Conflict,
+			want:    true,
+		},
+		{
+			name:    "PermissionDeny error",
+			err:     NewPermissionDeny("permission denied"),
+			errCode: Forbidden,
+			want:    true,
+		},
+		{
+			name:    "Mismatched error code",
+			err:     NewBadRequest("bad request error"),
+			errCode: NotFound,
+			want:    false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsErrorWithCode(tt.err, tt.errCode); got != tt.want {
+				t.Errorf("IsErrorWithCode() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
