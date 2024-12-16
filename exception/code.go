@@ -25,7 +25,9 @@ const (
 	// MethodNotAllowed 方法不允许
 	MethodNotAllowed = http.StatusMethodNotAllowed
 	// Conflict 资源冲突, 已经存在
-	Conflict            = http.StatusConflict
+	Conflict = http.StatusConflict
+	// UnprocessableEntity 语义错误 ; 适用于值在逻辑或业务上不合法的情况(比如用于表示参数通过了语法检查，但语义上不合法)。
+	UnprocessableEntity = http.StatusUnprocessableEntity
 	InternalServerError = http.StatusInternalServerError
 
 	// AccessTokenExpired token过期
@@ -50,12 +52,13 @@ var (
 		InternalServerError: "系统内部错误",
 		Success:             "success",
 
-		Unauthorized:     "认证失败",
-		Forbidden:        "访问未授权",
-		NotFound:         "Not Found",
-		MethodNotAllowed: "Method Not Allowed",
-		Conflict:         "资源已经存在",
-		BadRequest:       "请求不合法",
+		Unauthorized:        "认证失败",
+		Forbidden:           "访问未授权",
+		NotFound:            "Not Found",
+		MethodNotAllowed:    "Method Not Allowed",
+		Conflict:            "资源已经存在",
+		BadRequest:          "请求不合法",
+		UnprocessableEntity: "参数语义错误",
 
 		AccessTokenIllegal:  "访问令牌不合法",
 		RefreshTokenIllegal: "刷新令牌不合法",

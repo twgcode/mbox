@@ -45,6 +45,10 @@ func NewConflict(format string, a ...interface{}) APIException {
 	return newException(Conflict, format, a...)
 }
 
+func NewUnprocessableEntity(format string, a ...interface{}) APIException {
+	return newException(UnprocessableEntity, format, a...)
+}
+
 // NewInternalServerError 500
 func NewInternalServerError(format string, a ...interface{}) APIException {
 	return newException(InternalServerError, format, a...)
@@ -141,6 +145,19 @@ func IsConflictError(err error) bool {
 	}
 
 	return e.ErrorCode() == Conflict
+}
+
+func IsUnprocessableEntityError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	e, ok := err.(APIException)
+	if !ok {
+		return false
+	}
+
+	return e.ErrorCode() == UnprocessableEntity
 }
 
 // IsPermissionDenyError 判断是否是 Forbidden
