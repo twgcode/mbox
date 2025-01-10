@@ -8,18 +8,24 @@
 package sync
 
 import (
+	"runtime/debug"
+
 	"go.uber.org/zap"
 )
 
 // Go 开启 goroutine
-func Go(f func(), desc string, l *zap.Logger) {
+func Go(f func(), desc string, l *zap.Logger, stack ...bool) {
 	go func() {
 		defer func() {
 			if err := recover(); err != nil {
 				if l == nil {
 					l = zap.L()
 				}
-				l.Error("goroutine panic", zap.String("desc", desc), zap.Any("error", err))
+				if len(stack) > 0 && stack[0] {
+					l.Error("goroutine panic", zap.String("desc", desc), zap.Any("error", err), zap.Any("stack", string(debug.Stack())))
+				} else {
+					l.Error("goroutine panic", zap.String("desc", desc), zap.Any("error", err))
+				}
 			}
 		}()
 		f()
